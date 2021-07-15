@@ -4,8 +4,14 @@ to run the [Android Team Awareness Kit (ATAK)](https://www.civtak.org/)
 on a Fedora 34 Workstation.
 
 ## Build and install custom kernel with ashmem and binder
-You'll need these modules so run the following command and provide
-your password when requested for `sudo`:
+Copy or clone this repository to the target host where you'll install
+this kernel and run anbox. For example,
+
+    git clone https://github.com/rlucente-se-jboss/anbox-f34.git
+    cd anbox-f34
+
+ You'll need these modules so run the following command and provide
+ your password when requested for `sudo`:
 
     ./build-anbox-kernel.sh
 

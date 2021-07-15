@@ -3,7 +3,7 @@
 sudo dnf -y update
 sudo dnf -y install fedpkg ccache
 
-cd ~
+pushd $(dirname $0)
 
 if [ ! -d kernel ]
 then
@@ -34,3 +34,4 @@ git commit -am 'enable ashmem and binder'
 
 fedpkg local --without configchecks
 
+popd
