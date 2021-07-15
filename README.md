@@ -53,13 +53,13 @@ Run the following command to [install anbox](https://docs.anbox.io/userguide/ins
 Enter your password when prompted.
 
 ## Install Android Team Awareness Kit (ATAK)
-Launch Anbox by doing the following:
+Before launching Anbox, we need to do the following:
 
     sudo setenforce 0
 
 Yes, this is a terrible thing to do, but I haven't sorted out the
 SELinux changes for the binder device yet. But this is a really bad
-thing to do.
+thing to do. Seriously.
 
 Launch Anbox by starting the `Android Application Manager` within
 the `Activities` menu on the Fedora Worstation desktop.
@@ -69,5 +69,5 @@ and install it using the following command:
 
     adb install ATAK-4.3.0.4-67479c44-civ-release.apk
 
-The ATAK application will appear with the `Anbox Application Manager`
-window on your desktop. You can now launch that application.
+The ATAK application will appear within the `Anbox Application
+Manager` window on your desktop. You can now launch that application.
