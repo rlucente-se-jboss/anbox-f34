@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 
+sudo dnf -y update
+sudo dnf -y install fedpkg ccache git
+
 if [ -z $(git config --global --get user.name) ]
 then
     git config --global user.email "YOUR@EMAIL"
     git config --global user.name "YOUR USERNAME"
 fi
-
-sudo dnf -y update
-sudo dnf -y install fedpkg ccache
 
 pushd $(dirname $0)
 
