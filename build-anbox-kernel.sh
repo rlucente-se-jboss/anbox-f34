@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+if [ -z $(git config --global --get user.name) ]
+then
+    git config --global user.email "YOUR@EMAIL"
+    git config --global user.name "YOUR USERNAME"
+fi
+
 sudo dnf -y update
 sudo dnf -y install fedpkg ccache
 
@@ -12,9 +18,6 @@ fi
 
 cd kernel
 sudo dnf -y builddep kernel.spec
-
-git config --global user.email "rlucente@comcast.net"
-git config --global user.name "Rich Lucente"
 
 git checkout origin/f34
 git checkout -b ashmem_binder
