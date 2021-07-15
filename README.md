@@ -7,18 +7,18 @@ on a Fedora 34 Workstation.
 Copy or clone this repository to the target host where you'll install
 this kernel and run anbox. Make sure to also modify the `git config`
 options to match your git username and email in the `build-anbox-kernel.sh`
-script. For example,
+script. Get the repo using:
 
     git clone https://github.com/rlucente-se-jboss/anbox-f34.git
     cd anbox-f34
 
- You'll need these modules so run the following command and provide
- your password when requested for `sudo`:
+You'll need the `ashmem` and `binder` drivers so run the following
+command and provide your password when requested for `sudo`:
 
     ./build-anbox-kernel.sh
 
 This will take an hour or more to complete. Be patient. When the
-build finishes, install the kernel modules using:
+build finishes, install the newly built custom kernel using:
 
     ./install-anbox-kernel.sh
 
