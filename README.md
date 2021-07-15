@@ -5,7 +5,9 @@ on a Fedora 34 Workstation.
 
 ## Build and install custom kernel with ashmem and binder
 Copy or clone this repository to the target host where you'll install
-this kernel and run anbox. For example,
+this kernel and run anbox. Make sure to also modify the `git config`
+options to match your git username and email in the `build-anbox-kernel.sh`
+script. For example,
 
     git clone https://github.com/rlucente-se-jboss/anbox-f34.git
     cd anbox-f34
