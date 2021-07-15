@@ -1,4 +1,8 @@
-# Install Anbox of F34
+# Install Anbox on Fedora 34 Workstation
+The scripts and these instructions contain the commands necessary
+to run the [Android Team Awareness Kit (ATAK)](https://www.civtak.org/)
+on a Fedora 34 Workstation.
+
 ## Build and install custom kernel with ashmem and binder
 You'll need these modules so run the following command and provide
 your password when requested for `sudo`:
@@ -13,7 +17,8 @@ build finishes, install the kernel modules using:
 And then reboot the system to use the custom kernel.
 
 ## Verify modules are available
-You can run a [simple test](https://docs.anbox.io/userguide/install.html#install-kernel-modules) to make sure that appropriate devices have been created:
+You can run a [simple test](https://docs.anbox.io/userguide/install.html#install-kernel-modules)
+to make sure that appropriate devices have been created:
 
     ls /dev/{ashmem,binder}
 
@@ -23,7 +28,9 @@ At a minimum, you should see:
     /dev/binder
 
 ## Install snap for anbox
-You'll need both [snap](https://snapcraft.io/install/snap-store/fedora) to install Anbox. Run the following command to do so:
+You'll need [snap](https://snapcraft.io/install/snap-store/fedora)
+to install Anbox. Run the following command to install both `snap`
+and the `adb` tool to install APK files:
 
     sudo dnf -y install snapd android-tools
 
@@ -37,17 +44,17 @@ Run the following command to [install anbox](https://docs.anbox.io/userguide/ins
 
 Enter your password when prompted.
 
-## Install CivTAK
+## Install Android Team Awareness Kit (ATAK)
 Launch Anbox by doing the following:
 
     sudo setenforce 0
 
 Yes, this is a terrible thing to do, but I haven't sorted out the
-SELinux changes for the binder device and kernel module yet. But
-this is a really bad thing to do.
+SELinux changes for the binder device yet. But this is a really bad
+thing to do.
 
 Launch Anbox by starting the `Android Application Manager` within
-the `Activities` menu.
+the `Activities` menu on the Fedora Worstation desktop.
 
 Download the [Android Team Awareness Kit](https://d1n17y91d2yw11.cloudfront.net/dist/ATAK-4.3.0.4-67479c44-civ-release.apk)
 and install it using the following command:
