@@ -1,7 +1,7 @@
-# Install Anbox on Fedora 34 Workstation
+# Install Anbox on Fedora 34
 The scripts and these instructions contain the commands necessary
 to run the [Android Team Awareness Kit (ATAK)](https://www.civtak.org/)
-on a Fedora 34 Workstation.
+on a Fedora 34 instance.
 
 ## Build and install custom kernel with ashmem and binder
 Copy or clone this repository to the target host where you'll install
@@ -37,13 +37,15 @@ At a minimum, you should see:
 
 ## Install snap for anbox
 You'll need [snap](https://snapcraft.io/install/snap-store/fedora)
-to install Anbox. Run the following command to install both `snap`
-and the `adb` tool to install APK files:
+to install Anbox. Run the following command to install a minimum
+graphical environment as well as both `snap` and the `adb` tool to
+install APK files:
 
-    sudo dnf -y install snapd android-tools
+    sudo dnf -y install android-tools gnome-shell gnome-terminal snapd
+    sudo systemctl set-default graphical.target
 
-Log off/on or restart the system to ensure that the snap paths are
-available.
+Restart the system to ensure that the graphical environment and
+snap paths are available.
 
 ## Install anbox
 Run the following command to [install anbox](https://docs.anbox.io/userguide/install.html#install-the-anbox-snap):
