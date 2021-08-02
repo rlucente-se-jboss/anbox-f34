@@ -50,6 +50,27 @@ You should see:
     parm:           debug_mask:uint
     parm:           devices:charp
 
+Make sure to enable the binderfs environment using:
+
+    sudo mkdir /dev/binderfs
+    sudo mount -t binder binder /dev/binderfs
+
+The above commands need to be run at each reboot. But it would be
+better to make sure this is persisted if possible.
+
+The directory `/dev/binderfs` matches expectations for anbox's
+`session-manager` at start up.
+
+You can validate that all the needed devices are present using:
+
+    ls /dev/{ashmem,binder*}
+
+You should see:
+
+    /dev/ashmem
+    /dev/binderfs:
+    binder  binder-control  hwbinder  vndbinder
+
 ## Install minimal graphical environment
 You'll need a minimal graphical environment to run anbox as well
 as install android APK files. Run the following command to install
@@ -58,16 +79,22 @@ a minimal environment and the `adb` tool to install APK files:
     sudo dnf -y install gnome-shell gnome-terminal android-tools
     sudo systemctl set-default graphical.target
 
-Rstart the system to switch to the graphical environment.
+## Build anbox natively
+Anbox can be built natively by installing all the needed development
+libraries and applying a small patch set. The patches are pretty
+brute force to get around build errors, but there may be a cleaner
+way to do this by submitting patches to the `cmake` files that drive
+the build.
 
-## Install anbox
-Run the following command to [install anbox](https://docs.anbox.io/userguide/install.html#install-the-anbox-snap):
+Use the following commands to build and install anbox:
 
-    snap install --devmode --beta anbox
+    cd ~/anbox-f34/build-anbox
+    ./build-anbox.sh
 
-Enter your password when prompted.
+The script does a `sudo make install` so please supply your password
+for `sudo` when prompted.
 
-## Install Android Team Awareness Kit (ATAK)
+## Run anbox
 Before launching Anbox, we need to do the following:
 
     sudo setenforce 0
@@ -76,9 +103,36 @@ Yes, this is a terrible thing to do, but I haven't sorted out the
 SELinux changes for the binder device yet. But this is a really bad
 thing to do. Seriously.
 
-Launch Anbox by starting the `Android Application Manager` within
-the `Activities` menu on the Fedora Worstation desktop.
+Run the various anbox managers by leveraging the included script. Make
+sure to first enable the binderfs environment using:
 
+    sudo mkdir /dev/binderfs
+    sudo mount -t binder binder /dev/binderfs
+
+Anbox can be run by typing the following command:
+
+    cd ~/anbox-f34/run-anbox
+    ./run-anbox.sh
+
+Please supply your password for `sudo` when prompted.
+
+NB: Couple of problems here. The `run-anbox.sh` script has a line
+to launch a daemonized `container-manager` that does not return.
+We'll need a way to detect when the `container-manager` is fully
+started. The `session-manager` is throwing exceptions and segfaults.
+There are likely build issues, permissions issues, and a myriad of
+other problems. I welcome any contributions to help iron this all
+out. The errors that I'm seeing wrt `session-manager` are:
+
+    $ /usr/local/bin/anbox session-manager
+    [ 2021-08-02 17:57:57] [client.cpp:48@start] Failed to start container: Failed to start container: Failed to set config item lxc.group.devices.deny
+    [ 2021-08-02 17:57:57] [session_manager.cpp:164@operator()] Lost connection to container manager, terminating.
+    [ 2021-08-02 17:57:57] [daemon.cpp:61@Run] Container is not running
+    [ 2021-08-02 17:57:57] [session_manager.cpp:164@operator()] Lost connection to container manager, terminating.
+    Stack trace (most recent call last) in thread 2641:
+    #8    Object "", at 0xffffffffffffffff, in
+
+## Install Android Team Awareness Kit (ATAK)
 Download the [Android Team Awareness Kit](https://d1n17y91d2yw11.cloudfront.net/dist/ATAK-4.3.0.4-67479c44-civ-release.apk)
 and install it using the following command:
 
