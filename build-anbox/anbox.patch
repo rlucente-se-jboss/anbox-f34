@@ -1,0 +1,41 @@
+diff --git a/src/anbox/input/manager.cpp b/src/anbox/input/manager.cpp
+index a047a99..00b45bb 100644
+--- a/src/anbox/input/manager.cpp
++++ b/src/anbox/input/manager.cpp
+@@ -15,6 +15,8 @@
+  *
+  */
+ 
++#include <boost/asio/detail/cstdint.hpp>
++
+ #include "anbox/input/manager.h"
+ #include "anbox/system_configuration.h"
+ #include "anbox/input/device.h"
+diff --git a/src/anbox/input/manager.h b/src/anbox/input/manager.h
+index 22f1406..1ae816f 100644
+--- a/src/anbox/input/manager.h
++++ b/src/anbox/input/manager.h
+@@ -18,6 +18,8 @@
+ #ifndef ANBOX_INPUT_MANAGER_H_
+ #define ANBOX_INPUT_MANAGER_H_
+ 
++#include <boost/asio/detail/cstdint.hpp>
++
+ #include <map>
+ #include <memory>
+ 
+diff --git a/tests/CMakeLists.txt b/tests/CMakeLists.txt
+index 694c55b..e1d137d 100644
+--- a/tests/CMakeLists.txt
++++ b/tests/CMakeLists.txt
+@@ -19,8 +19,8 @@ macro(ANBOX_ADD_TEST test_name src)
+ 
+     anbox-core
+ 
+-    ${GMOCK_LIBRARIES}
+-    ${GTEST_BOTH_LIBRARIES}
++    gmock gmock_main
++    gtest gtest_main
+ 
+     ${ARGN}
+ 

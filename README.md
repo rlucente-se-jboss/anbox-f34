@@ -3,49 +3,62 @@ The scripts and these instructions contain the commands necessary
 to run the [Android Team Awareness Kit (ATAK)](https://www.civtak.org/)
 on a Fedora 34 instance.
 
-## Build and install custom kernel with ashmem and binder
+## Build and install custom kernel with ashmem and binder drivers
 Copy or clone this repository to the target host where you'll install
-this kernel and run anbox. Make sure to also modify the `git config`
-options to match your git username and email in the `build-anbox-kernel.sh`
-script. Get the repo using:
+this kernel and run anbox. Get the repo using:
 
+
+    cd ~
     git clone https://github.com/rlucente-se-jboss/anbox-f34.git
-    cd anbox-f34
 
-You'll need the `ashmem` and `binder` drivers so run the following
-command and provide your password when requested for `sudo`:
+Make sure to also modify the `git config` options to match your git
+username and email in the `build-kernel.sh` script. You'll need the
+`ashmem` and `binder` drivers so run the following command and
+provide your password when requested for `sudo`:
 
-    ./build-anbox-kernel.sh
+    cd ~/anbox-f34/build-kernel
+    ./build-kernel.sh
 
 This will take an hour or more to complete. Be patient. When the
 build finishes, install the newly built custom kernel using:
 
-    ./install-anbox-kernel.sh
+    cd ~/anbox-f34/build-kernel
+    ./install-kernel.sh
 
 And then reboot the system to use the custom kernel.
 
-## Verify modules are available
+## Verify drivers are available
 You can run a [simple test](https://docs.anbox.io/userguide/install.html#install-kernel-modules)
-to make sure that appropriate devices have been created:
+to make sure that a device was created for ashmem:
 
-    ls /dev/{ashmem,binder}
+    ls /dev/ashmem
 
-At a minimum, you should see:
+You should see:
 
     /dev/ashmem
-    /dev/binder
 
-## Install snap for anbox
-You'll need [snap](https://snapcraft.io/install/snap-store/fedora)
-to install Anbox. Run the following command to install a minimum
-graphical environment as well as both `snap` and the `adb` tool to
-install APK files:
+You can confirm the built-in `binder` driver is available using:
 
-    sudo dnf -y install android-tools gnome-shell gnome-terminal snapd
+    modinfo binder
+
+You should see:
+
+    name:           binder
+    filename:       (builtin)
+    license:        GPL v2
+    file:           drivers/android/binder
+    parm:           debug_mask:uint
+    parm:           devices:charp
+
+## Install minimal graphical environment
+You'll need a minimal graphical environment to run anbox as well
+as install android APK files. Run the following command to install
+a minimal environment and the `adb` tool to install APK files:
+
+    sudo dnf -y install gnome-shell gnome-terminal android-tools
     sudo systemctl set-default graphical.target
 
-Restart the system to ensure that the graphical environment and
-snap paths are available.
+Rstart the system to switch to the graphical environment.
 
 ## Install anbox
 Run the following command to [install anbox](https://docs.anbox.io/userguide/install.html#install-the-anbox-snap):

@@ -11,9 +11,11 @@ fi
 
 pushd $(dirname $0)
 
+BRANCH="f$(cat /etc/fedora-release | awk '{print $3}')"
+
 if [ ! -d kernel ]
 then
-    fedpkg clone -a kernel
+    fedpkg clone -a -b $BRANCH kernel
 fi
 
 cd kernel
@@ -26,9 +28,12 @@ git branch -u origin/f34
 if [ -z $(grep ANDROID kernel-local) ]
 then
     cat >> kernel-local <<EOF
+CONFIG_LOCALVERSION=ashmem_binder
 CONFIG_ANDROID=y
 CONFIG_ANDROID_BINDER_IPC=y
 CONFIG_ANDROID_BINDER_DEVICES=binder
+CONFIG_ANDROID_BINDERFS=y
+CONFIG_ANDROID_BINDER_IPC_SELFTEST=y
 CONFIG_ASHMEM=y
 EOF
 fi
