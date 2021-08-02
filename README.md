@@ -76,7 +76,7 @@ You'll need a minimal graphical environment to run anbox as well
 as install android APK files. Run the following command to install
 a minimal environment and the `adb` tool to install APK files:
 
-    sudo dnf -y install gnome-shell gnome-terminal android-tools
+    sudo dnf -y install gnome-shell gnome-terminal android-tools lxc
     sudo systemctl set-default graphical.target
 
 ## Build anbox natively
@@ -112,7 +112,7 @@ sure to first enable the binderfs environment using:
 Anbox can be run by typing the following command:
 
     cd ~/anbox-f34/run-anbox
-    ./run-anbox.sh
+    export ANBOX_LOG_LEVEL=debug && ./run-anbox.sh
 
 Please supply your password for `sudo` when prompted.
 
