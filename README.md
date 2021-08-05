@@ -3,14 +3,16 @@ The scripts and these instructions contain the commands necessary
 to run the [Android Team Awareness Kit (ATAK)](https://www.civtak.org/)
 on a Fedora 34 instance.
 
-## Build and install custom kernel with ashmem and binder
+## Build and install custom kernel with ashmem and binder drivers
 Copy or clone this repository to the target host where you'll install
-this kernel and run anbox. Make sure to also modify the `git config`
-options to match your git username and email in the `build-anbox-kernel.sh`
-script. Get the repo using:
+this kernel and run anbox. Get the repo using:
 
+    cd ~
     git clone https://github.com/rlucente-se-jboss/anbox-f34.git
     cd anbox-f34
+
+NB: Make sure to also modify the `git config` options to match your
+git username and email in the `build-anbox-kernel.sh` script.
 
 You'll need the `ashmem` and `binder` drivers so run the following
 command and provide your password when requested for `sudo`:
@@ -24,16 +26,49 @@ build finishes, install the newly built custom kernel using:
 
 And then reboot the system to use the custom kernel.
 
-## Verify modules are available
+## Verify drivers are available
 You can run a [simple test](https://docs.anbox.io/userguide/install.html#install-kernel-modules)
-to make sure that appropriate devices have been created:
+to make sure that a device was created for ashmem:
 
-    ls /dev/{ashmem,binder}
+    ls /dev/ashmem
 
 At a minimum, you should see:
 
     /dev/ashmem
-    /dev/binder
+
+You can confirm the built-in `binder` driver is available using:
+
+    modinfo binder
+
+You should see:
+
+    name:           binder
+    filename:       (builtin)
+    license:        GPL v2
+    file:           drivers/android/binder
+    parm:           debug_mask:uint
+    parm:           devices:charp
+
+Make sure to enable the binderfs environment using:
+
+    sudo mkdir /dev/binderfs
+    sudo mount -t binder binder /dev/binderfs
+
+The above commands need to be run at each reboot, but it would be
+better to make sure this is persisted if possible.
+
+The directory `/dev/binderfs` matches expectations for anbox's
+`session-manager` at start up.
+
+You can validate that all the needed devices are present using:
+
+    ls /dev/{ashmem,binder*}
+
+You should see:
+
+    /dev/ashmem
+    /dev/binderfs:
+    binder  binder-control  hwbinder  vndbinder
 
 ## Install snap for anbox
 You'll need [snap](https://snapcraft.io/install/snap-store/fedora)
@@ -73,3 +108,7 @@ and install it using the following command:
 
 The ATAK application will appear within the `Anbox Application
 Manager` window on your desktop. You can now launch that application.
+
+At this point, ATAK will launch and request several permissions.
+It then exits. I'm not sure why but I suspect there are missing
+devices, etc.
