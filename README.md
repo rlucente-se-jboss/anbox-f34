@@ -70,12 +70,7 @@ Yes, this is a terrible thing to do, but I haven't sorted out the
 SELinux changes for the binder device yet. But this is a really bad
 thing to do. Seriously.
 
-Run the various anbox managers by leveraging the included script. Make
-sure to first enable the binderfs environment using:
-
-    sudo mkdir /dev/binderfs
-    sudo mount -t binder binder /dev/binderfs
-
+Run the various anbox managers by leveraging the included script.
 Anbox can be run by typing the following command:
 
     cd ~/anbox-f34/run-anbox
