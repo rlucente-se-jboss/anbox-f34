@@ -29,47 +29,14 @@ And then reboot the system to use the custom kernel.
 
 ## Verify drivers are available
 You can run a [simple test](https://docs.anbox.io/userguide/install.html#install-kernel-modules)
-to make sure that a device was created for ashmem:
+to make sure that the devices were created for both ashmem and binder:
 
-    ls /dev/ashmem
-
-You should see:
-
-    /dev/ashmem
-
-You can confirm the built-in `binder` driver is available using:
-
-    modinfo binder
-
-You should see:
-
-    name:           binder
-    filename:       (builtin)
-    license:        GPL v2
-    file:           drivers/android/binder
-    parm:           debug_mask:uint
-    parm:           devices:charp
-
-Make sure to enable the binderfs environment using:
-
-    sudo mkdir /dev/binderfs
-    sudo mount -t binder binder /dev/binderfs
-
-The above commands need to be run at each reboot. But it would be
-better to make sure this is persisted if possible.
-
-The directory `/dev/binderfs` matches expectations for anbox's
-`session-manager` at start up.
-
-You can validate that all the needed devices are present using:
-
-    ls /dev/{ashmem,binder*}
+    ls /dev/{ashmem,binder}
 
 You should see:
 
     /dev/ashmem
-    /dev/binderfs:
-    binder  binder-control  hwbinder  vndbinder
+    /dev/binder
 
 ## Install minimal graphical environment
 You'll need a minimal graphical environment to run anbox as well
